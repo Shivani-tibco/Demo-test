@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Run Mend Scan') {
+            steps {
+                script {
+                    // Mend Credentials
+                    def mendApiKey = 'cn-registry-service-1614a98c-a448-46@mend.io'
+                    def mendUserKey = '22ac59984b7f4d1a90ace847d96e6df135d4aa5522b4461ba69b3d0ed963e885'
+
+                    // JFrog Artifactory Configuration
+                    def artifactoryUrl = 'https://csgprdusw2reposaas.jfrog.io'
+                    def artifactoryUsername = 'shivani.agrahari@cloud.com'
+                    def artifactoryPassword = 'cmVmdGtuOjAxOjAwMDAwMDAwMDA6R1REM2tCUDhybU9mV2p6c3lnUUJCSjRrSXpa'
+
+                    // Execute the Mend scan using the Mend CLI
+                    sh '''
+                        mend scan --api-key ${mendApiKey} --user-key ${mendUserKey} --artifactory-url ${artifactoryUrl} --artifactory-username ${artifactoryUsername} --artifactory-password ${artifactoryPassword} --scan-includes "*"
+                    '''
+                }
+            }
+        }
+    }
+}
